@@ -31,7 +31,8 @@ interface NetIface { iface: string; ip4: string; mac: string; }
 interface NetStat { iface: string; rxSec: number; txSec: number; }
 interface NetworkData { interfaces: NetIface[]; stats: NetStat[]; }
 interface BatteryData { hasBattery: boolean; percent: number | null; isCharging: boolean | null; }
-interface ProcessData { all: number; running: number; blocked: number; sleeping: number; }
+interface RuntimeProcess { pid: number; name: string; parentPid: number; }
+interface ProcessData { all: number; running: number; blocked: number; sleeping: number; runtimes: RuntimeProcess[]; }
 
 interface StatusData {
   online: boolean;
@@ -216,6 +217,17 @@ function ProcessCard({ processes, battery }: { processes: ProcessData; battery: 
         <span className="label">Blocked</span>
         <span className={`value ${processes.blocked > 0 ? "danger" : "ok"}`}>{processes.blocked}</span>
       </div>
+      <h2 style={{ marginTop: 16 }}>Runtimes</h2>
+      {processes.runtimes?.length > 0 ? (
+        processes.runtimes.map((p) => (
+          <div key={p.pid} className="info-row">
+            <span className="label">{p.name}</span>
+            <span className="value dim">PID {p.pid}</span>
+          </div>
+        ))
+      ) : (
+        <p className="dim">None running</p>
+      )}
       {battery.hasBattery && (
         <>
           <h2 style={{ marginTop: 16 }}>Battery</h2>

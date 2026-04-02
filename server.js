@@ -1,3 +1,5 @@
+process.title = "yonka-ka"
+
 const express = require("express");
 const cors = require("cors");
 const si = require("systeminformation");
@@ -123,6 +125,9 @@ app.get("/api/status", async (_req, res) => {
         running: procs.running,
         blocked: procs.blocked,
         sleeping: procs.sleeping,
+        runtimes: (procs.list || [])
+          .filter((p) => p.name && /^(node|python)/i.test(p.name))
+          .map((p) => ({ pid: p.pid, name: p.name, parentPid: p.parentPid })),
       },
     });
   } catch (err) {
