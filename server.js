@@ -4,7 +4,7 @@ const si = require("systeminformation");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = 55000;
 
 app.use(cors());
 app.use(express.json());
