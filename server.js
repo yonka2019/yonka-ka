@@ -1,4 +1,4 @@
-process.title = "yonka-ka"
+process.title = "ka";
 
 const express = require("express");
 const cors = require("cors");
@@ -6,7 +6,7 @@ const si = require("systeminformation");
 const path = require("path");
 
 const app = express();
-const PORT = 55000;
+const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
@@ -57,8 +57,9 @@ app.get("/api/status", async (_req, res) => {
 
     const { cpu, osInfo, graphics, ifaces } = staticCache;
 
-    const ifaceList = (Array.isArray(ifaces) ? ifaces : Object.values(ifaces))
-      .filter((n) => !n.internal && n.ip4);
+    const ifaceList = (
+      Array.isArray(ifaces) ? ifaces : Object.values(ifaces)
+    ).filter((n) => !n.internal && n.ip4);
 
     const ifaceNames = new Set(ifaceList.map((n) => n.iface));
 
